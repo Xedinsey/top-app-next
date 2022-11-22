@@ -4,6 +4,9 @@ import {useEffect, useState} from "react";
 
 export default function Home(): JSX.Element {
     const [counter, setCounter] = useState<number>(0);
+    const [show, setShow] = useState<boolean>(false);
+    const [rating, setRating] = useState<number>(2);
+
 
     useEffect(() => {
         console.log("Counter" + counter);
@@ -15,7 +18,7 @@ export default function Home(): JSX.Element {
         <>
             <Htag tag='h1'>{counter}</Htag>
             <Button appearance="primary" arrow="down" onClick={()=> setCounter(x => x+1)}>Кнопка</Button>
-            <Button appearance="ghost" arrow="right">Кнопка</Button>
+            <Button appearance="ghost" arrow="right" onClick={() => {setShow(state => !state); console.log("render")}}>Кнопка</Button>
             <P size='l'>Большой</P>
             <P size='m'>Средний</P>
             <P size='s'>Маленький</P>
@@ -23,7 +26,7 @@ export default function Home(): JSX.Element {
             <Tag size='m' color='red'>Red</Tag>
             <Tag color='primary'>Primary</Tag>
             <Tag size='m' color='green'>Green</Tag>
-            <Rating rating={4} />
+            {show && <Rating rating={rating} setRating={setRating} isEditable/>}
         </>
     );
 }
