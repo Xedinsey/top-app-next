@@ -8,7 +8,7 @@ export const Menu = (): JSX.Element => {
     return (
       <>
           <ul>
-              {/*{menu.map(el => <li key={el._id.secondCategory}>{el._id.secondCategory}</li>)}*/}
+              {menu.map(m => (<li key={m._id.secondCategory}>{m._id.secondCategory}</li>))}
           </ul>
       </>
     );

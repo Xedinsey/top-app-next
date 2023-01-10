@@ -1,6 +1,6 @@
 import React, {createContext, PropsWithChildren, useState} from "react";
 import {MenuItem} from "../Interfaces/menu.interface";
-import {TopLevelCategory} from "../Interfaces/page.inteface";
+import {TopLevelCategory} from "../Interfaces/page.interface";
 
 
 export interface IAppContext {
