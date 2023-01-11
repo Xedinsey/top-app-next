@@ -7,7 +7,7 @@ import { TopPageModel } from '../../Interfaces/page.interface';
 import { ParsedUrlQuery } from 'node:querystring';
 import { ProductModel } from '../../Interfaces/product.interface';
 
-const firstCategory = 0;
+
 
 function Course({ menu, page, products }: CourseProps): JSX.Element {
     return (
@@ -20,9 +20,14 @@ function Course({ menu, page, products }: CourseProps): JSX.Element {
 export default withLayout(Course);
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    const { data: menu } = await axios.post<MenuItem[]>(process.env.NEXT_PUBLIC_DOMAIN + '/api/top-page/find', {
-        firstCategory
+    const response: Response = await fetch(process.env.NEXT_PUBLIC_DOMAIN + '/api/top-page/find', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify({firstCategory: 0})
     });
+    const menu = await response.json();
     return {
         paths: menu.flatMap(m => m.pages.map(p => '/courses/' + p.alias)),
         fallback: true
@@ -30,14 +35,20 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps<CourseProps> = async ({ params }: GetStaticPropsContext<ParsedUrlQuery>) => {
+    const firstCategory = 0;
     if (!params) {
         return {
             notFound: true
         };
     }
-    const { data: menu } = await axios.post<MenuItem[]>(process.env.NEXT_PUBLIC_DOMAIN + '/api/top-page/find', {
-        firstCategory
+    const response: Response = await fetch(process.env.NEXT_PUBLIC_DOMAIN + '/api/top-page/find', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify({firstCategory: 0})
     });
+    const menu = await response.json();
     const { data: page } = await axios.get<TopPageModel>(process.env.NEXT_PUBLIC_DOMAIN + '/api/top-page/byAlias/' + params.alias);
     const { data: products } = await axios.post<ProductModel[]>(process.env.NEXT_PUBLIC_DOMAIN + '/api/product/find', {
         category: page.category,

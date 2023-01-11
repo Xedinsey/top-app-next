@@ -2,7 +2,6 @@ import { GetStaticProps } from 'next';
 import React, { useState } from 'react';
 import { Button, Htag, P, Rating, Tag} from '../components';
 import { withLayout } from '../layout/Layout';
-import axios from 'axios';
 import { MenuItem } from '../Interfaces/menu.interface';
 
 
@@ -30,9 +29,24 @@ export default withLayout(Home);
 
 export const getStaticProps: GetStaticProps<HomeProps> = async () => {
     const firstCategory = 0;
-    const { data: menu } = await axios.post<MenuItem[]>(process.env.NEXT_PUBLIC_DOMAIN + '/api/top-page/find', {
-        firstCategory
+    // const {data: menu }= await axios.post<MenuItem[]>(process.env.NEXT_PUBLIC_DOMAIN + '/api/top-page/find', {
+    //     firstCategory
+    // }, {
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     },
+    //     responseType: "json",
+    //     responseEncoding: "utf-8"
+    // });
+
+    const response: Response = await fetch(process.env.NEXT_PUBLIC_DOMAIN + '/api/top-page/find', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify({firstCategory: 0})
     });
+    const menu = await response.json();
     return {
         props: {
             menu,
