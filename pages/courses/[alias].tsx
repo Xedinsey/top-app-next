@@ -12,7 +12,7 @@ import { ProductModel } from '../../Interfaces/product.interface';
 function Course({ menu, page, products }: CourseProps): JSX.Element {
     return (
         <>
-            {products && products.length}
+            {/*{products && products.length}*/}
         </>
     );
 }
@@ -27,7 +27,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
         },
         body: JSON.stringify({firstCategory: 0})
     });
-    const menu = await response.json();
+    const menu: MenuItem[] = await response.json();
     return {
         paths: menu.flatMap(m => m.pages.map(p => '/courses/' + p.alias)),
         fallback: true
@@ -41,26 +41,26 @@ export const getStaticProps: GetStaticProps<CourseProps> = async ({ params }: Ge
             notFound: true
         };
     }
-    const response: Response = await fetch(process.env.NEXT_PUBLIC_DOMAIN + '/api/top-page/find', {
+    const responseMenu: Response = await fetch(process.env.NEXT_PUBLIC_DOMAIN + '/api/top-page/find', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
         },
         body: JSON.stringify({firstCategory: 0})
     });
-    const menu = await response.json();
-    const { data: page } = await axios.get<TopPageModel>(process.env.NEXT_PUBLIC_DOMAIN + '/api/top-page/byAlias/' + params.alias);
-    const { data: products } = await axios.post<ProductModel[]>(process.env.NEXT_PUBLIC_DOMAIN + '/api/product/find', {
-        category: page.category,
-        limit: 10
-    });
+    const menu = await responseMenu.json();
+    // const { data: page } = await axios.get<TopPageModel>(process.env.NEXT_PUBLIC_DOMAIN + '/api/top-page/byAlias/' + params.alias);
+    // const { data: products } = await axios.post<ProductModel[]>(process.env.NEXT_PUBLIC_DOMAIN + '/api/product/find', {
+    //     category: page.category,
+    //     limit: 10
+    // });
 
     return {
         props: {
             menu,
             firstCategory,
-            page,
-            products
+            // page,
+            // products
         }
     };
 };
@@ -68,6 +68,6 @@ export const getStaticProps: GetStaticProps<CourseProps> = async ({ params }: Ge
 interface CourseProps extends Record<string, unknown> {
     menu: MenuItem[];
     firstCategory: number;
-    page: TopPageModel;
-    products: ProductModel[];
+    // page: TopPageModel;
+    // products: ProductModel[];
 }

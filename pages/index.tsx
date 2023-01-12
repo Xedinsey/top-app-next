@@ -46,7 +46,7 @@ export const getStaticProps: GetStaticProps<HomeProps> = async () => {
         },
         body: JSON.stringify({firstCategory: 0})
     });
-    const menu = await response.json();
+    const menu: MenuItem[] = await response.json();
     return {
         props: {
             menu,
